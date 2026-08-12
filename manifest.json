@@ -1,0 +1,20 @@
+{
+  "name": "দৈনন্দিন হিসাব",
+  "short_name": "দৈনন্দিন হিসাব",
+  "description": "দৈনন্দিন আয়, ব্যয়, দেনা, পাওনা ও স্টকের হিসাব রাখুন।",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff0f6",
+  "theme_color": "#ff579d",
+  "lang": "bn",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
