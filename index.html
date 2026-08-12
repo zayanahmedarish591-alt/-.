@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>দৈনন্দিন হিসাব</title>
+
+<meta name="theme-color" content="#ff579d">
+<meta name="description" content="দৈনন্দিন আয়, ব্যয়, দেনা, পাওনা ও স্টকের হিসাব রাখুন।">
+
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon.svg">
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,"Noto Sans Bengali",sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#fff0f6,#ffd6e7,#fff7fa);
+    color:#333;
+    min-height:100vh;
+}
+
+.header{
+    background:linear-gradient(135deg,#ff4f9a,#ff79b5);
+    color:white;
+    padding:28px 18px;
+    text-align:center;
+    border-radius:0 0 30px 30px;
+    box-shadow:0 5px 20px #ff8fba66;
+}
+
+.header h1{
+    font-size:28px;
+}
+
+.business-name{
+    margin-top:7px;
+    font-size:15px;
+}
+
+.header p{
+    margin-top:7px;
+    font-size:14px;
+}
+
+.menu-btn{
+    position:fixed;
+    top:14px;
+    left:14px;
+    z-index:150;
+    width:46px;
+    height:46px;
+    border:0;
+    border-radius:14px;
+    background:white;
+    color:#e83280;
+    font-size:27px;
+    box-shadow:0 4px 15px #0002;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    padding:18px 15px 40px;
+}
+
+.search-box{
+    background:white;
+    border-radius:20px;
+    padding:15px;
+    margin-bottom:18px;
+    box-shadow:0 5px 20px #d9367d22;
+}
+
+.search-title{
+    color:#e83280;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.search-row{
+    display:flex;
+    gap:8px;
+}
+
+.search-row input{
+    flex:1;
+    margin:0;
+}
+
+.search-row button{
+    border:0;
+    border-radius:12px;
+    padding:0 16px;
+    background:#ff579d;
+    color:white;
+    font-size:16px;
+}
+
+.search-results{
+    margin-top:10px;
+}
+
+.search-result{
+    background:#fff0f6;
+    padding:12px;
+    border-radius:13px;
+    margin-top:8px;
+}
+
+.summary{
+    background:white;
+    border-radius:22px;
+    padding:18px;
+    margin-bottom:20px;
+    box-shadow:0 5px 20px #d9367d22;
+}
+
+.summary h2{
+    color:#e83e88;
+    font-size:19px;
+    margin-bottom:12px;
+}
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.summary-box{
+    background:#fff0f6;
+    padding:14px;
+    border-radius:15px;
+    text-align:center;
+}
+
+.summary-box span{
+    display:block;
+    font-size:13px;
+    color:#777;
+}
+
+.summary-box strong{
+    display:block;
+    margin-top:5px;
+    color:#e52f7e;
+    font-size:18px;
+}
+
+.menu{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.card{
+    background:white;
+    border-radius:22px;
+    padding:20px 10px;
+    text-align:center;
+    box-shadow:0 6px 20px #d9367d20;
+    cursor:pointer;
+}
+
+.card:active{
+    transform:scale(.96);
+}
+
+.icon{
+    font-size:36px;
+    margin-bottom:9px;
+}
+
+.card h3{
+    font-size:16px;
+}
+
+.card p{
+    color:#999;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.calculator-card{
+    grid-column:1/-1;
+    background:linear-gradient(135deg,#ff4f9a,#ff79b5);
+    color:white;
+}
+
+.calculator-card h3,
+.calculator-card p{
+    color:white;
+}
+
+.contact-card{
+    background:white;
+    border-radius:22px;
+    padding:18px;
+    margin-top:20px;
+    text-align:center;
+    box-shadow:0 5px 20px #d9367d22;
+}
+
+.contact-card h3{
+    color:#e83280;
+}
+
+.contact-card p{
+    color:#777;
+    font-size:13px;
+    margin:8px 0 14px;
+}
+
+.whatsapp{
+    display:inline-block;
+    text-decoration:none;
+    background:#25D366;
+    color:white;
+    padding:12px 20px;
+    border-radius:13px;
+    font-weight:bold;
+}
+
+.footer{
+    text-align:center;
+    color:#999;
+    font-size:12px;
+    padding:15px;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:#0007;
+    z-index:200;
+    padding:20px;
+    overflow:auto;
+}
+
+.modal-box{
+    background:white;
+    max-width:600px;
+    margin:40px auto;
+    border-radius:25px;
+    padding:20px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.modal-header h2{
+    color:#e83280;
+}
+
+.close{
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:50%;
+    background:#ffe1ed;
+    color:#e83280;
+    font-size:22px;
+}
+
+input,textarea{
+    width:100%;
+    padding:13px;
+    border:1px solid #f3b7cf;
+    border-radius:13px;
+    margin-bottom:10px;
+    outline:none;
+    font-size:15px;
+}
+
+textarea{
+    min-height:90px;
+}
+
+.btn{
+    width:100%;
+    border:0;
+    padding:14px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#ff4f9a,#ff79b5);
+    color:white;
+    font-weight:bold;
+    font-size:16px;
+}
+
+.items{
+    margin-top:18px;
+}
+
+.item{
+    background:#fff0f6;
+    padding:13px;
+    border-radius:14px;
+    margin-bottom:9px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.item strong{
+    color:#df317b;
+}
+
+.item small{
+    display:block;
+    color:#777;
+    margin-top:4px;
+}
+
+.delete{
+    border:0;
+    background:#ffdede;
+    color:#d33;
+    border-radius:9px;
+    padding:7px;
+}
+
+.drawer{
+    position:fixed;
+    top:0;
+    left:-300px;
+    width:285px;
+    height:100vh;
+    background:white;
+    z-index:180;
+    padding:75px 15px 20px;
+    overflow:auto;
+    box-shadow:8px 0 30px #0003;
+    transition:.3s;
+}
+
+.drawer.open{
+    left:0;
+}
+
+.drawer h2{
+    color:#e83280;
+    margin-bottom:15px;
+}
+
+.drawer-item{
+    background:#fff0f6;
+    padding:12px;
+    border-radius:14px;
+    margin-bottom:9px;
+}
+
+.drawer-item strong{
+    color:#df317b;
+}
+
+.overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:#0005;
+    z-index:170;
+}
+
+.overlay.show{
+    display:block;
+}
+
+.calculator{
+    background:#222;
+    padding:15px;
+    border-radius:20px;
+}
+
+.calc-display{
+    width:100%;
+    height:65px;
+    background:#111;
+    color:white;
+    border:0;
+    border-radius:12px;
+    text-align:right;
+    padding:10px;
+    font-size:28px;
+}
+
+.calc-buttons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    margin-top:10px;
+}
+
+.calc-buttons button{
+    height:55px;
+    border:0;
+    border-radius:12px;
+    background:#444;
+    color:white;
+    font-size:20px;
+}
+
+.calc-buttons .operator,
+.calc-buttons .equal{
+    background:#ff579d;
+}
+
+.register{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:#0008;
+    z-index:500;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.register-box{
+    width:100%;
+    max-width:400px;
+    background:white;
+    padding:25px;
+    border-radius:25px;
+    text-align:center;
+}
+
+.register-box .big{
+    font-size:50px;
+}
+
+.register-box h2{
+    color:#e83280;
+    margin:8px 0;
+}
+
+.register-box p{
+    color:#777;
+    font-size:14px;
+    margin-bottom:15px;
+}
+
+@media(max-width:450px){
+    .header h1{
+        font-size:25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- BUSINESS REGISTER -->
+
+<div class="register" id="registerBox">
+
+<div class="register-box">
+
+<div class="big">🏪</div>
+
+<h2>Register Your Business</h2>
+
+<p>
+আপনার ব্যবসার নাম লিখুন
+</p>
+
+<input
+id="businessInput"
+type="text"
+placeholder="Business Name">
+
+<button
+class="btn"
+onclick="saveBusiness()">
+
+সেভ করুন
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- MENU BUTTON -->
+
+<button
+class="menu-btn"
+onclick="openMenu()">
+
+☰
+
+</button>
+
+
+<!-- DRAWER -->
+
+<div
+class="overlay"
+id="overlay"
+onclick="closeMenu()">
+</div>
+
+<div
+class="drawer"
+id="drawer">
+
+<h2>📋 হিসাবের লিস্ট</h2>
+
+<div id="history"></div>
+
+</div>
+
+
+<!-- HEADER -->
+
+<header class="header">
+
+<h1>🌸 দৈনন্দিন হিসাব</h1>
+
+<div
+class="business-name"
+id="businessName">
+</div>
+
+<p>
+আপনার প্রতিদিনের হিসাব রাখুন সহজেই
+</p>
+
+</header>
+
+
+<div class="container">
+
+
+<!-- SEARCH -->
+
+<div class="search-box">
+
+<div class="search-title">
+🔎 তারিখ দিয়ে হিসাব খুঁজুন
+</div>
+
+<div class="search-row">
+
+<input
+type="date"
+id="searchDate">
+
+<button
+onclick="searchDate()">
+
+খুঁজুন
+
+</button>
+
+</div>
+
+<div
+id="searchResults"
+class="search-results">
+</div>
+
+</div>
+
+
+<!-- SUMMARY -->
+
+<div class="summary">
+
+<h2>
+📊 হিসাবের সারাংশ
+</h2>
+
+<div class="summary-grid">
+
+<div class="summary-box">
+<span>জমানো</span>
+<strong id="savedTotal">৳ 0</strong>
+</div>
+
+<div class="summary-box">
+<span>দেনা</span>
+<strong id="dueTotal">৳ 0</strong>
+</div>
+
+<div class="summary-box">
+<span>পাওনা</span>
+<strong id="receiveTotal">৳ 0</strong>
+</div>
+
+<div class="summary-box">
+<span>স্টক</span>
+<strong id="stockTotal">0</strong>
+</div>
+
+<div class="summary-box">
+<span>দৈনিক আয়</span>
+<strong id="dailyIncome">৳ 0</strong>
+</div>
+
+<div class="summary-box">
+<span>দৈনিক ব্যয়</span>
+<strong id="dailyExpense">৳ 0</strong>
+</div>
+
+<div class="summary-box">
+<span>মাসিক আয়</span>
+<strong id="monthlyIncome">৳ 0</strong>
+</div>
+
+<div class="summary-box">
+<span>মাসিক ব্যয়</span>
+<strong id="monthlyExpense">৳ 0</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- OPTIONS -->
+
+<div class="menu">
+
+<div class="card"
+onclick="openSection('saved')">
+
+<div class="icon">💰</div>
+
+<h3>জমানো টাকা</h3>
+
+<p>জমানো টাকার হিসাব</p>
+
+</div>
+
+
+<div class="card"
+onclick="openSection('due')">
+
+<div class="icon">💸</div>
+
+<h3>দেনা টাকা</h3>
+
+<p>যে টাকা দিতে হবে</p>
+
+</div>
+
+
+<div class="card"
+onclick="openSection('receive')">
+
+<div class="icon">💵</div>
+
+<h3>পাওনা টাকা</h3>
+
+<p>যে টাকা পাবেন</p>
+
+</div>
+
+
+<div class="card"
+onclick="openSection('stock')">
+
+<div class="icon">📦</div>
+
+<h3>আজকের স্টক</h3>
+
+<p>স্টকের পণ্য</p>
+
+</div>
+
+
+<div class="card"
+onclick="openSection('outstock')">
+
+<div class="icon">🚫</div>
+
+<h3>স্টক আউট</h3>
+
+<p>শেষ পণ্য</p>
+
+</div>
+
+
+<div class="card"
+onclick="openSection('dailyIncome')">
+
+<div class="icon">💚</div>
+
+<h3>দৈনিক আয়</h3>
+
+<p>আজকের আয়</p>
+
+</div>
+
+
+<div class="card"
+onclick="openSection('dailyExpense')">
+
+<div class="icon">❤️</div>
+
+<h3>দৈনিক ব্যয়</h3>
+
+<p>আজকের খরচ</p>
+
+</div>
+
+
+<div class="card"
+onclick="openSection('monthlyIncome')">
+
+<div class="icon">💰</div>
+
+<h3>মাসিক আয়</h3>
+
+<p>মাসের আয়</p>
+
+</div>
+
+
+<div class="card"
+onclick="openSection('monthlyExpense')">
+
+<div class="icon">💸</div>
+
+<h3>মাসিক ব্যয়</h3>
+
+<p>মাসের খরচ</p>
+
+</div>
+
+
+<div class="card calculator-card"
+onclick="openCalculator()">
+
+<div class="icon">🧮</div>
+
+<h3>ক্যালকুলেটর</h3>
+
+<p>দ্রুত হিসাব করুন</p>
+
+</div>
+
+</div>
+
+
+<!-- CONTACT -->
+
+<div class="contact-card">
+
+<h3>
+📞 Contact & Support
+</h3>
+
+<p>
+Developed by — Any Update Information & Help
+</p>
+
+<a
+class="whatsapp"
+href="https://wa.link/er8glj"
+target="_blank">
+
+💬 WhatsApp এ যোগাযোগ করুন
+
+</a>
+
+</div>
+
+
+<div class="footer">
+
+© 2026 দৈনন্দিন হিসাব<br>
+Developed by Humayes Ahmed
+
+</div>
+
+</div>
+
+
+<!-- ACCOUNT MODAL -->
+
+<div
+class="modal"
+id="accountModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2 id="modalTitle">
+হিসাব
+</h2>
+
+<button
+class="close"
+onclick="closeModal()">
+×
+</button>
+
+</div>
+
+<input
+id="nameInput"
+placeholder="নাম / পণ্যের নাম">
+
+<input
+id="amountInput"
+type="number"
+placeholder="টাকার পরিমাণ / পরিমাণ">
+
+<textarea
+id="noteInput"
+placeholder="বিস্তারিত লিখুন">
+</textarea>
+
+<button
+class="btn"
+onclick="addAccount()">
+
++ হিসাব যোগ করুন
+
+</button>
+
+<div
+class="items"
+id="items">
+</div>
+
+</div>
+
+</div>
+
+
+<!-- CALCULATOR MODAL -->
+
+<div
+class="modal"
+id="calculatorModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2>🧮 ক্যালকুলেটর</h2>
+
+<button
+class="close"
+onclick="closeCalculator()">
+×
+</button>
+
+</div>
+
+<div class="calculator">
+
+<input
+class="calc-display"
+id="calcDisplay"
+value="0"
+readonly>
+
+<div class="calc-buttons">
+
+<button onclick="clearCalc()">C</button>
+<button onclick="backspace()">⌫</button>
+<button onclick="calc('%')">%</button>
+<button class="operator" onclick="calc('/')">÷</button>
+
+<button onclick="calc('7')">7</button>
+<button onclick="calc('8')">8</button>
+<button onclick="calc('9')">9</button>
+<button class="operator" onclick="calc('*')">×</button>
+
+<button onclick="calc('4')">4</button>
+<button onclick="calc('5')">5</button>
+<button onclick="calc('6')">6</button>
+<button class="operator" onclick="calc('-')">−</button>
+
+<button onclick="calc('1')">1</button>
+<button onclick="calc('2')">2</button>
+<button onclick="calc('3')">3</button>
+<button class="operator" onclick="calc('+')">+</button>
+
+<button onclick="calc('0')">0</button>
+<button onclick="calc('.')">.</button>
+<button class="equal" onclick="calculate()">=</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const names={
+saved:"💰 জমানো টাকা",
+due:"💸 দেনা টাকা",
+receive:"💵 পাওনা টাকা",
+stock:"📦 আজকের স্টক",
+outstock:"🚫 স্টক আউট",
+dailyIncome:"💚 দৈনিক আয়",
+dailyExpense:"❤️ দৈনিক ব্যয়",
+monthlyIncome:"💰 মাসিক আয়",
+monthlyExpense:"💸 মাসিক ব্যয়"
+};
+
+
+function data(){
+
+let d=
+JSON.parse(
+localStorage.getItem("hisabData")
+)||{};
+
+Object.keys(names).forEach(k=>{
+if(!Array.isArray(d[k]))
+d[k]=[];
+});
+
+return d;
+
+}
+
+
+function save(d){
+
+localStorage.setItem(
+"hisabData",
+JSON.stringify(d)
+);
+
+}
+
+
+function openSection(type){
+
+current=type;
+
+document.getElementById(
+"modalTitle"
+).innerText=names[type];
+
+document.getElementById(
+"accountModal"
+).style.display="block";
+
+document.getElementById(
+"nameInput"
+).value="";
+
+document.getElementById(
+"amountInput"
+).value="";
+
+document.getElementById(
+"noteInput"
+).value="";
+
+showItems();
+
+}
+
+
+let current="saved";
+
+
+function addAccount(){
+
+let name=
+document.getElementById(
+"nameInput"
+).value.trim();
+
+let amount=
+document.getElementById(
+"amountInput"
+).value.trim();
+
+let note=
+document.getElementById(
+"noteInput"
+).value.trim();
+
+
+if(!name){
+
+alert("নাম লিখুন");
+
+return;
+
+}
+
+
+let d=data();
+
+
+d[current].push({
+
+id:Date.now(),
+
+name,
+
+amount,
+
+note,
+
+date:new Date()
+.toISOString()
+.slice(0,10)
+
+});
+
+
+save(d);
+
+showItems();
+
+updateSummary();
+
+showHistory();
+
+
+document.getElementById(
+"nameInput"
+).value="";
+
+document.getElementById(
+"amountInput"
+).value="";
+
+document.getElementById(
+"noteInput"
+).value="";
+
+}
+
+
+function showItems(){
+
+let box=
+document.getElementById("items");
+
+let d=data();
+
+box.innerHTML="";
+
+
+d[current]
+.slice()
+.reverse()
+.forEach(x=>{
+
+let div=
+document.createElement("div");
+
+div.className="item";
+
+div.innerHTML=`
+
+<div>
+
+<strong>
+${safe(x.name)}
+</strong>
+
+<div>
+${x.amount?"৳ "+safe(x.amount):""}
+</div>
+
+<small>
+${safe(x.note||"")}
+</small>
+
+<small>
+📅 ${x.date}
+</small>
+
+</div>
+
+<button
+class="delete"
+onclick="removeItem(${x.id})">
+
+🗑️
+
+</button>
+
+`;
+
+box.appendChild(div);
+
+});
+
+}
+
+
+function removeItem(id){
+
+let d=data();
+
+d[current]=
+d[current].filter(x=>x.id!==id);
+
+save(d);
+
+showItems();
+
+updateSummary();
+
+showHistory();
+
+}
+
+
+function safe(text){
+
+return String(text)
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+
+}
+
+
+function total(arr){
+
+return arr.reduce(
+(a,b)=>a+(Number(b.amount)||0),
+0
+);
+
+}
+
+
+function updateSummary(){
+
+let d=data();
+
+document.getElementById("savedTotal")
+.innerText="৳ "+total(d.saved);
+
+document.getElementById("dueTotal")
+.innerText="৳ "+total(d.due);
+
+document.getElementById("receiveTotal")
+.innerText="৳ "+total(d.receive);
+
+document.getElementById("stockTotal")
+.innerText=d.stock.length;
+
+document.getElementById("dailyIncome")
+.innerText="৳ "+total(d.dailyIncome);
+
+document.getElementById("dailyExpense")
+.innerText="৳ "+total(d.dailyExpense);
+
+document.getElementById("monthlyIncome")
+.innerText="৳ "+total(d.monthlyIncome);
+
+document.getElementById("monthlyExpense")
+.innerText="৳ "+total(d.monthlyExpense);
+
+}
+
+
+function openMenu(){
+
+document.getElementById(
+"drawer"
+).classList.add("open");
+
+document.getElementById(
+"overlay"
+).classList.add("show");
+
+showHistory();
+
+}
+
+
+function closeMenu(){
+
+document.getElementById(
+"drawer"
+).classList.remove("open");
+
+document.getElementById(
+"overlay"
+).classList.remove("show");
+
+}
+
+
+function showHistory(){
+
+let box=
+document.getElementById("history");
+
+let d=data();
+
+let all=[];
+
+Object.keys(names).forEach(k=>{
+
+d[k].forEach(x=>{
+
+all.push({
+...x,
+type:k
+});
+
+});
+
+});
+
+
+all.sort(
+(a,b)=>b.id-a.id
+);
+
+
+if(!all.length){
+
+box.innerHTML=
+"<p style='color:#999;text-align:center'>কোনো হিসাব নেই</p>";
+
+return;
+
+}
+
+
+box.innerHTML=
+all.map(x=>`
+
+<div
+class="drawer-item"
+onclick="openSection('${x.type}')">
+
+<strong>
+${names[x.type]}
+</strong>
+
+<div>
+${safe(x.name)}
+</div>
+
+<small>
+${x.amount?"৳ "+safe(x.amount):""}
+</small>
+
+<small>
+📅 ${x.date}
+</small>
+
+</div>
+
+`).join("");
+
+}
+
+
+function closeModal(){
+
+document.getElementById(
+"accountModal"
+).style.display="none";
+
+}
+
+
+let calcValue="";
+
+
+function openCalculator(){
+
+document.getElementById(
+"calculatorModal"
+).style.display="block";
+
+calcValue="";
+
+document.getElementById(
+"calcDisplay"
+).value="0";
+
+}
+
+
+function closeCalculator(){
+
+document.getElementById(
+"calculatorModal"
+).style.display="none";
+
+}
+
+
+function calc(v){
+
+if(calcValue==="0")
+calcValue="";
+
+calcValue+=v;
+
+document.getElementById(
+"calcDisplay"
+).value=calcValue;
+
+}
+
+
+function clearCalc(){
+
+calcValue="";
+
+document.getElementById(
+"calcDisplay"
+).value="0";
+
+}
+
+
+function backspace(){
+
+calcValue=
+calcValue.slice(0,-1);
+
+document.getElementById(
+"calcDisplay"
+).value=
+calcValue||"0";
+
+}
+
+
+function calculate(){
+
+try{
+
+let exp=
+calcValue.replace(/%/g,"/100");
+
+let result=
+Function(
+'"use strict";return ('+
+exp+
+')'
+)();
+
+if(!isFinite(result))
+throw Error();
+
+calcValue=String(result);
+
+document.getElementById(
+"calcDisplay"
+).value=result;
+
+}catch(e){
+
+calcValue="";
+
+document.getElementById(
+"calcDisplay"
+).value="Error";
+
+}
+
+}
+
+
+/* BUSINESS */
+
+function saveBusiness(){
+
+let name=
+document.getElementById(
+"businessInput"
+).value.trim();
+
+if(!name){
+
+alert("Business Name লিখুন");
+
+return;
+
+}
+
+localStorage.setItem(
+"businessName",
+name
+);
+
+document.getElementById(
+"businessName"
+).innerText="🏪 "+name;
+
+document.getElementById(
+"registerBox"
+).style.display="none";
+
+}
+
+
+function loadBusiness(){
+
+let name=
+localStorage.getItem(
+"businessName"
+);
+
+if(name){
+
+document.getElementById(
+"businessName"
+).innerText="🏪 "+name;
+
+}else{
+
+document.getElementById(
+"registerBox"
+).style.display="flex";
+
+}
+
+}
+
+
+/* DATE SEARCH */
+
+function searchDate(){
+
+let wanted=
+document.getElementById(
+"searchDate"
+).value;
+
+let result=
+document.getElementById(
+"searchResults"
+);
+
+if(!wanted){
+
+result.innerHTML=
+"<p style='color:#999'>তারিখ নির্বাচন করুন।</p>";
+
+return;
+
+}
+
+let d=data();
+
+let found=[];
+
+
+Object.keys(names).forEach(k=>{
+
+d[k].forEach(x=>{
+
+if(x.date===wanted){
+
+found.push({
+...x,
+type:k
+});
+
+}
+
+});
+
+});
+
+
+if(!found.length){
+
+result.innerHTML=
+"<p style='color:#999'>এই তারিখে কোনো হিসাব পাওয়া যায়নি।</p>";
+
+return;
+
+}
+
+
+result.innerHTML=
+found.map(x=>`
+
+<div class="search-result">
+
+<strong>
+${names[x.type]}
+</strong>
+
+<div>
+${safe(x.name)}
+</div>
+
+<div>
+${x.amount?"৳ "+safe(x.amount):""}
+</div>
+
+<small>
+${safe(x.note||"")}
+</small>
+
+</div>
+
+`).join("");
+
+}
+
+
+loadBusiness();
+
+updateSummary();
+
+</script>
+
+
+<!-- SERVICE WORKER -->
+
+<script>
+
+if("serviceWorker" in navigator){
+
+window.addEventListener(
+"load",
+function(){
+
+navigator.serviceWorker
+.register("./sw.js")
+.then(()=>{
+console.log(
+"দৈনন্দিন হিসাব App Ready"
+);
+})
+.catch(error=>{
+console.log(
+"Service Worker Error:",
+error
+);
+});
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
